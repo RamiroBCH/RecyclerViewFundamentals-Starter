@@ -69,18 +69,20 @@ class SleepDetailFragment : Fragment() {
         // give the binding object a reference to it.
         binding.sleepDetailViewModel = sleepDetailViewModel
 
-        binding.lifecycleOwner = this
+        binding.setLifecycleOwner(this)
 
         // Add an Observer to the state variable for Navigating when a Quality icon is tapped.
-        sleepDetailViewModel?.navigateToSleepTracker?.observe(viewLifecycleOwner, Observer {
-            if (it == true) { // Observed state is true.
-                this.findNavController().navigate(
-                    SleepDetailFragmentDirections.actionSleepDetailFragmentToSleepTrackerFragment())
-                // Reset state to make sure we only navigate once, even if the device
-                // has a configuration change.
-                sleepDetailViewModel.doneNavigating()
-            }
-        })
+        if (sleepDetailViewModel != null) {
+            sleepDetailViewModel.navigateToSleepTracker.observe(viewLifecycleOwner, Observer {
+                if (it == true) { // Observed state is true.
+                    this.findNavController().navigate(
+                        SleepDetailFragmentDirections.actionSleepDetailFragmentToSleepTrackerFragment())
+                    // Reset state to make sure we only navigate once, even if the device
+                    // has a configuration change.
+                    sleepDetailViewModel.doneNavigating()
+                }
+            })
+        }
 
         return binding.root
     }
